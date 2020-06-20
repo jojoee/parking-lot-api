@@ -5,14 +5,16 @@
   "main": "server.js",
   "scripts": {
     "commit": "git-cz",
-    "coverage": "echo coverage",
-    "coverage.check": "echo coverage.check",
-    "e2e": "echo e2e",
+    "coverage": "nyc --reporter=lcov npm t",
+    "coverage.check": "nyc check-coverage --statements 20 --branches 20 --functions 20 --lines 20",
+    "e2e": "mocha test --verbose --exit",
+    "e2e.watch": "mocha test --verbose --watch",
     "server": "node server.js",
     "server.watch": "nodemon server.js",
     "standard": "standard --verbose --env mocha",
-    "validate": "npm run standard && npm run coverage && npm run coverage.check && npm run e2e",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha \"./{,!(node_modules)/**/}*.spec.js\" --verbose",
+    "test.watch": "npm run test -- --watch",
+    "validate": "npm run standard && npm run coverage && npm run coverage.check && npm run e2e"
   },
   "config": {
     "ghooks": {
@@ -43,10 +45,14 @@
     "joi": "^13.3.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "3.1.0",
     "ghooks": "2.0.4",
+    "mocha": "^5.0.5",
     "nodemon": "^2.0.4",
-    "standard": "^12.0.1"
+    "nyc": "^10.3.0",
+    "standard": "^12.0.1",
+    "supertest": "^3.0.0"
   }
 }
