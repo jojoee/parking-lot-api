@@ -14,6 +14,7 @@
     "standard": "standard --verbose --env mocha",
     "test": "mocha \"./{,!(node_modules)/**/}*.spec.js\" --verbose",
     "test.watch": "npm run test -- --watch",
+    "validate.noe2e": "npm run standard && npm run coverage && npm run coverage.check",
     "validate": "npm run standard && npm run coverage && npm run coverage.check && npm run e2e"
   },
   "config": {
