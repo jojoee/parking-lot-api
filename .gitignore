@@ -1,0 +1,14 @@
+# IDE & editor
+.idea
+.vscode
+
+# dependency
+node_modules
+bower_components
+
+# test
+coverage
+.nyc_output
+
+# OS
+.DS_Store

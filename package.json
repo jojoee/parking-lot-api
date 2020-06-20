@@ -1,0 +1,40 @@
+{
+  "name": "parking-lot-api",
+  "version": "0.0.0-development",
+  "description": "Parking lot API design",
+  "main": "index.js",
+  "scripts": {
+    "commit": "git-cz",
+    "coverage": "echo coverage",
+    "coverage.check": "echo coverage.check",
+    "e2e": "echo e2e",
+    "standard": "standard --verbose --env mocha",
+    "validate": "npm run standard && npm run coverage && npm run coverage.check && npm run e2e",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run validate"
+    },
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jojoee/parking-lot-api.git"
+  },
+  "author": "Nathachai Thongniran <inid3a@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jojoee/parking-lot-api/issues"
+  },
+  "homepage": "https://github.com/jojoee/parking-lot-api#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "3.1.0",
+    "ghooks": "2.0.4",
+    "standard": "^12.0.1"
+  }
+}
