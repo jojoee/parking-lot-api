@@ -2,12 +2,14 @@
   "name": "parking-lot-api",
   "version": "0.0.0-development",
   "description": "Parking lot API design",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "commit": "git-cz",
     "coverage": "echo coverage",
     "coverage.check": "echo coverage.check",
     "e2e": "echo e2e",
+    "server": "node server.js",
+    "server.watch": "nodemon server.js",
     "standard": "standard --verbose --env mocha",
     "validate": "npm run standard && npm run coverage && npm run coverage.check && npm run e2e",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -30,11 +32,21 @@
     "url": "https://github.com/jojoee/parking-lot-api/issues"
   },
   "homepage": "https://github.com/jojoee/parking-lot-api#readme",
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.4",
+    "debug": "^2.6.8",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "helmet": "^3.23.1",
+    "joi": "^13.3.0"
+  },
   "devDependencies": {
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "3.1.0",
     "ghooks": "2.0.4",
+    "nodemon": "^2.0.4",
     "standard": "^12.0.1"
   }
 }
