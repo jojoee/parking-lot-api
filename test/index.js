@@ -17,8 +17,8 @@ describe('/', () => {
   it('returns hello message', done => {
     request
       .get(url)
-      .expect(constant.HTTP_CODE_OK, {
-        code: constant.HTTP_CODE_OK,
+      .expect(constant.HTTP_CODE.OK, {
+        code: constant.HTTP_CODE.OK,
         data: null,
         message: 'hello'
       }, done)
