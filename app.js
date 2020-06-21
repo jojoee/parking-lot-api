@@ -17,7 +17,6 @@ app.use(session({
 }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
 app.use(router)
 
 module.exports = app
