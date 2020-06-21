@@ -9,6 +9,7 @@
     "coverage.check": "nyc check-coverage --statements 20 --branches 20 --functions 20 --lines 20",
     "e2e": "mocha test --verbose --exit",
     "e2e.watch": "mocha test --verbose --watch",
+    "sequelize": "sequelize",
     "server": "node server.js",
     "server.watch": "nodemon server.js",
     "standard": "standard --verbose --env mocha",
@@ -44,6 +45,9 @@
     "express-session": "^1.15.6",
     "helmet": "^3.23.1",
     "joi": "^13.3.0"
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.13",
+    "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
