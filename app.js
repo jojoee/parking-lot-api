@@ -1,4 +1,5 @@
 const config = require('./config')
+const model = require('./model')
 const express = require('express')
 const bodyParser = require('body-parser')
 const compression = require('compression')
@@ -6,6 +7,9 @@ const helmet = require('helmet')
 const session = require('express-session')
 const app = express()
 const router = require('./route')
+
+// init
+model.initDb()
 
 // middleware
 app.use(helmet())
