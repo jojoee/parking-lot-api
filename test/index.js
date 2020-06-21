@@ -24,3 +24,19 @@ describe('/', () => {
       }, done)
   })
 })
+
+describe('/404', () => {
+  before(() => {
+    url = '/404'
+  })
+
+  it('returns 404 response', done => {
+    request
+      .get(url)
+      .expect(constant.HTTP_CODE.NOT_FOUND, {
+        code: constant.HTTP_CODE.NOT_FOUND,
+        data: null,
+        message: ''
+      }, done)
+  })
+})
