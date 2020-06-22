@@ -56,7 +56,7 @@ When we exit a parking lot
 
 ## Model
 
-![ERD](./asset/parking-lot-ERD-orthogonal layout.png.png)
+![ERD](./asset/parking-lot-ERD-orthogonal-layout.png)
 
 ## API
 - [x] POST `/parking_lot` to create parking lot entity
