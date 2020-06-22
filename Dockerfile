@@ -1,9 +1,10 @@
 FROM node:12.15.0-alpine
 
-RUN mkdir -p /parking-lot-api
-COPY . /parking-lot-api
+RUN mkdir -p /usr/src/app
+COPY . /usr/src/app
 
-WORKDIR ./parking-lot-api
+WORKDIR ./usr/src/app
 RUN npm install
-# todo migration DB
+ENTRYPOINT []
+
 CMD node server.js

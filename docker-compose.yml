@@ -1,0 +1,37 @@
+version: "2.1"
+
+services:
+
+  app_parking_lot_api:
+    build: .
+    image: parking-lot-api:12.15.0-alpine
+    container_name: ctn_parking_lot_api
+    restart: always
+    working_dir: /usr/src/app
+    # https://stackoverflow.com/questions/30063907/using-docker-compose-how-to-execute-multiple-commands
+    command: >
+      sh -c "npx sequelize db:create &&
+             npx sequelize db:migrate &&
+             node server.js"
+    ports:
+      - 5005:5005
+    links:
+      - db_mysql
+    # https://stackoverflow.com/questions/42567475/docker-compose-check-if-mysql-connection-is-ready/45058879
+    depends_on:
+      db_mysql:
+        condition: service_healthy
+
+  db_mysql:
+    image: mysql:8.0.19
+    container_name: ctn_mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_USER=joe
+      - MYSQL_PASSWORD=joepass
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
