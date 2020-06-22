@@ -35,6 +35,28 @@ async function park (req, res, next) {
   }
 }
 
+async function exit (req, res, next) {
+  debug(exit.name)
+  const {
+    ticketId
+  } = req.body
+
+  try {
+    await vehicleService.exit({ ticketId })
+
+    reply(res, { code: constant.HTTP_CODE.OK })
+  } catch (err) {
+    if (err.message === 'not found ticket id') {
+      reply(res, {
+        code: constant.HTTP_CODE.NOT_FOUND
+      })
+    } else {
+      reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
+    }
+  }
+}
+
 module.exports = {
-  park
+  park,
+  exit
 }

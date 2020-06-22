@@ -11,6 +11,7 @@ router.get('/', (req, res) => reply(res, { message: 'hello' }))
 // route
 router.post('/parking_lot', parkingLotController.createParkingLot)
 router.post('/vehicle/park', vehicleController.park)
+router.post('/vehicle/exit', vehicleController.exit)
 // 404
 router.get('*', (req, res) => reply(res, { code: constant.HTTP_CODE.NOT_FOUND }))
 
