@@ -3,8 +3,8 @@ const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
 const model = require('./../model')
-let request, server, url, db, response
-let parkingLot, vehicleSizeId, plateNumber
+let request, server, db, response
+let vehicleSizeId, plateNumber, parkingLot
 
 before(() => {
   server = require('./../app')
@@ -15,14 +15,9 @@ before(() => {
 
 describe('POST /vehicle/park to get a ticket', () => {
   before(async () => {
-    // prepare, reset
-    url = '/vehicle/park'
+    // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
-    plateNumber = 'abc-1246'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
+    plateNumber = 'abc-123'
 
     // prepare, create parking lot
     response = await request
@@ -40,12 +35,19 @@ describe('POST /vehicle/park to get a ticket', () => {
 
     // perform
     response = await request
-      .post(url)
+      .post('/vehicle/park')
       .send({
         vehicleSizeId,
         plateNumber,
         parkingLotId: parkingLot.id
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture
@@ -85,34 +87,48 @@ describe('POST /vehicle/park to get a ticket', () => {
 
 describe('POST /vehicle/park to get a nearest slot', () => {
   before(async () => {
-    // prepare, reset
-    url = '/vehicle/park'
+    // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
-    plateNumber = 'abc-1246'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
+    plateNumber = 'abc-123'
 
     // prepare, create parking lots
-    await request.post('/parking_lot').send({
-      name: 'mall_1', rank: 1, nSlotsKey: { 1: 0, 2: 2, 3: 0 }
-    })
-    const currentParkingLotResponse = await request.post('/parking_lot').send({
-      name: 'mall_4', rank: 4, nSlotsKey: { 1: 1, 2: 0, 3: 0 }
-    })
-    await request.post('/parking_lot').send({
-      name: 'mall_5', rank: 5, nSlotsKey: { 1: 0, 2: 3, 3: 0 }
-    })
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_1',
+        rank: 1,
+        nSlotsKey: { 1: 0, 2: 2, 3: 0 }
+      })
+    const currentParkingLotResponse = await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_4',
+        rank: 4,
+        nSlotsKey: { 1: 1, 2: 0, 3: 0 }
+      })
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_5',
+        rank: 5,
+        nSlotsKey: { 1: 0, 2: 3, 3: 0 }
+      })
 
     // perform
     response = await request
-      .post(url)
+      .post('/vehicle/park')
       .send({
         vehicleSizeId,
         plateNumber,
         parkingLotId: currentParkingLotResponse.body.data.id
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   it(`returns ${constant.HTTP_CODE.CREATED}`, () => {
@@ -144,35 +160,69 @@ describe(`POST /vehicle/park to get a nearest slot
   (1st nearest parking slot is not available, using 2nd nearest parking slot`, () => {
   before(async () => {
     // prepare, reset
-    url = '/vehicle/park'
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
-    plateNumber = 'abc-1246'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
+    plateNumber = 'abc-123'
 
     // prepare, create parking lots
-    await request.post('/parking_lot').send({
-      name: 'mall_1', rank: 1, nSlotsKey: { 1: 0, 2: 3, 3: 0 }
-    })
-    const currentParkingLotResponse = await request.post('/parking_lot').send({
-      name: 'mall_4', rank: 4, nSlotsKey: { 1: 1, 2: 0, 3: 0 }
-    })
-    await request.post('/parking_lot').send({
-      name: 'mall_5', rank: 5, nSlotsKey: { 1: 0, 2: 2, 3: 0 }
-    })
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_1',
+        rank: 1,
+        nSlotsKey: { 1: 0, 2: 3, 3: 0 }
+      })
+    const currentParkingLotResponse = await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_4',
+        rank: 4,
+        nSlotsKey: { 1: 1, 2: 0, 3: 0 }
+      })
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_5',
+        rank: 5,
+        nSlotsKey: { 1: 0, 2: 2, 3: 0 }
+      })
 
     // perform
     const currentParkingLotId = currentParkingLotResponse.body.data.id
-    await request.post(url).send({ vehicleSizeId, plateNumber, parkingLotId: currentParkingLotId })
-    await request.post(url).send({ vehicleSizeId, plateNumber, parkingLotId: currentParkingLotId })
-    await request.post(url).send({ vehicleSizeId, plateNumber, parkingLotId: currentParkingLotId })
-    response = await request
-      .post(url)
+    await request
+      .post('/vehicle/park')
       .send({
-        vehicleSizeId, plateNumber, parkingLotId: currentParkingLotId
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: currentParkingLotId
       })
+    await request
+      .post('/vehicle/park')
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: currentParkingLotId
+      })
+    await request
+      .post('/vehicle/park')
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: currentParkingLotId
+      })
+    response = await request
+      .post('/vehicle/park')
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: currentParkingLotId
+      })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   it(`returns ${constant.HTTP_CODE.CREATED}`, () => {
@@ -202,31 +252,48 @@ describe(`POST /vehicle/park to get a nearest slot
 
 describe('POST /vehicle/park to get a nearest slot but not slot available', () => {
   before(async () => {
-    // prepare, reset
-    url = '/vehicle/park'
+    // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
-    plateNumber = 'abc-1246'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
+    plateNumber = 'abc-123'
 
     // prepare, create parking lots
-    await request.post('/parking_lot').send({
-      name: 'mall_1', rank: 1, nSlotsKey: { 1: 2, 2: 0, 3: 0 }
-    })
-    const currentParkingLotResponse = await request.post('/parking_lot').send({
-      name: 'mall_4', rank: 4, nSlotsKey: { 1: 1, 2: 1, 3: 0 }
-    })
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_1',
+        rank: 1,
+        nSlotsKey: { 1: 2, 2: 0, 3: 0 }
+      })
+    const currentParkingLotResponse = await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_4',
+        rank: 4,
+        nSlotsKey: { 1: 1, 2: 1, 3: 0 }
+      })
 
     // perform
     const currentParkingLotId = currentParkingLotResponse.body.data.id
-    await request.post(url).send({ vehicleSizeId, plateNumber, parkingLotId: currentParkingLotId })
-    response = await request
-      .post(url)
+    await request
+      .post('/vehicle/park')
       .send({
-        vehicleSizeId, plateNumber, parkingLotId: currentParkingLotId
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: currentParkingLotId
       })
+    response = await request
+      .post('/vehicle/park')
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: currentParkingLotId
+      })
+  })
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   it(`returns ${constant.HTTP_CODE.OK}`, () => {

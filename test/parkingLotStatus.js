@@ -13,26 +13,31 @@ before(() => {
 
 describe('GET /parking_lot/status to get parking lot status', () => {
   before(async () => {
-    // prepare
+    // prepare, add parking lot
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_1',
+        rank: 1,
+        nSlotsKey: { 1: 1, 2: 2, 3: 3 }
+      })
+    await request
+      .post('/parking_lot')
+      .send({
+        name: 'mall_2',
+        rank: 2,
+        nSlotsKey: { 1: 0, 2: 2, 3: 0 }
+      })
+
+    // perform
+    response = await request.get('/parking_lot/status')
+  })
+
+  after(async () => {
     await model.resetTable('Ticket')
     await model.resetTable('Slot')
     await model.resetTable('ParkingLotStack')
     await model.resetTable('ParkingLot')
-
-    // prepare, add parking lot
-    await request.post('/parking_lot').send({
-      name: 'mall_1',
-      rank: 1,
-      nSlotsKey: { 1: 1, 2: 2, 3: 3 }
-    })
-    await request.post('/parking_lot').send({
-      name: 'mall_2',
-      rank: 2,
-      nSlotsKey: { 1: 0, 2: 2, 3: 0 }
-    })
-
-    // perform
-    response = await request.get('/parking_lot/status')
   })
 
   // todo move constant/hardcode to test/fixture

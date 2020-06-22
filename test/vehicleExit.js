@@ -3,7 +3,7 @@ const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
 const model = require('./../model')
-let request, server, url, db, response
+let request, server, db, response
 let parkingLot, vehicleSizeId, plateNumber, ticket
 
 before(() => {
@@ -15,39 +15,57 @@ before(() => {
 
 describe('POST /vehicle/exit to leave the parking lot', () => {
   before(async () => {
-    // prepare, reset
-    url = '/vehicle/exit'
+    // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
-    plateNumber = 'abc-1246'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
+    plateNumber = 'abc-123'
 
     // prepare, create parking lot
     response = await request
       .post('/parking_lot')
-      .send({ name: 'mall_1', rank: 1, nSlotsKey: { 1: 0, 2: 4, 3: 0 } })
+      .send({
+        name: 'mall_1',
+        rank: 1,
+        nSlotsKey: { 1: 0, 2: 4, 3: 0 }
+      })
     parkingLot = response.body.data
 
     // prepare, park 3 vehicles
     await request
       .post('/vehicle/park')
-      .send({ vehicleSizeId, plateNumber, parkingLotId: parkingLot.id })
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: parkingLot.id
+      })
     const ticketResponse = await request
       .post('/vehicle/park')
-      .send({ vehicleSizeId, plateNumber, parkingLotId: parkingLot.id })
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: parkingLot.id
+      })
     await request
       .post('/vehicle/park')
-      .send({ vehicleSizeId, plateNumber, parkingLotId: parkingLot.id })
+      .send({
+        vehicleSizeId,
+        plateNumber,
+        parkingLotId: parkingLot.id
+      })
     ticket = ticketResponse.body.data
 
     // perform
     response = await request
-      .post(url)
+      .post('/vehicle/exit')
       .send({
         ticketId: ticket.id
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   it(`returns ${constant.HTTP_CODE.OK}`, () => {
@@ -91,13 +109,8 @@ describe('POST /vehicle/exit to leave the parking lot', () => {
 describe('POST /vehicle/exit not found a ticket id', () => {
   before(async () => {
     // prepare, reset
-    url = '/vehicle/exit'
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
-    plateNumber = 'abc-1246'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
+    plateNumber = 'abc-123'
 
     // prepare, create parking lot
     response = await request
@@ -112,10 +125,17 @@ describe('POST /vehicle/exit not found a ticket id', () => {
 
     // perform
     response = await request
-      .post(url)
+      .post('/vehicle/exit')
       .send({
         ticketId: -1
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   // // todo move constant/hardcode to test/fixture

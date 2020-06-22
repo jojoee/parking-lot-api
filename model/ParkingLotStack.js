@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     parking_lot_id: DataTypes.INTEGER,
     parking_lot_rank: DataTypes.INTEGER,
-    slot_size_id: DataTypes.INTEGER, // no assign FK
+    slot_size_id: DataTypes.INTEGER,
     data: DataTypes.STRING
   }, {
     tableName: 'parking_lot_stack',

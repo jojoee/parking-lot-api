@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.test' })
 const constant = require('../config/constant')
 const supertest = require('supertest')
-let request, server, url
+let request, server
 
 before(() => {
   server = require('./../app')
@@ -10,13 +10,9 @@ before(() => {
 })
 
 describe('GET /404', () => {
-  before(() => {
-    url = '/404'
-  })
-
   it('returns 404 response', done => {
     request
-      .get(url)
+      .get('/404')
       .expect(constant.HTTP_CODE.NOT_FOUND, {
         code: constant.HTTP_CODE.NOT_FOUND,
         data: null,

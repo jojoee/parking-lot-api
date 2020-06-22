@@ -13,12 +13,6 @@ before(() => {
 
 describe('GET /ticket to get a ticket', () => {
   before(async () => {
-    // prepare, reset
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
-
     // prepare, create parking lot
     response = await request
       .post('/parking_lot')
@@ -53,6 +47,13 @@ describe('GET /ticket to get a ticket', () => {
     // perform
     response = await request
       .get(`/ticket?vehicleSizeId=${constant.SLOT_SIZE.SMALL}`)
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture

@@ -75,7 +75,6 @@ When we exit a parking lot
 - [ ] Complete docstrings
 - [ ] Security concerns e.g. not expose `id` field directly from database
 - [ ] Hide 5xx error
-- [ ] Move teardown into the bottom of the test suit (instead of top of test suit)
 - [ ] Encoding e.g. encode ticket id
 - [ ] PATCH `/parking_lot`
 - [ ] DELETE `/parking_lot`

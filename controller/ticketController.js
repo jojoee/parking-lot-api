@@ -15,6 +15,7 @@ async function getTickets (req, res, next) {
       data: tickets
     })
   } catch (err) {
+    console.log('err', err)
     reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
   }
 }

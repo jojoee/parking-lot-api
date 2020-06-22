@@ -2,8 +2,12 @@
  * Return response
  *
  * @param {Object} res
+ * @param {Number} [param.code=200]
+ * @param {any} [param.data=null]
+ * @param {String} [param.message='']
  */
-function reply (res, { code = 200, data = null, message = '' }) {
+function reply (res, param) {
+  const { code = 200, data = null, message = '' } = param
   res.status(code)
   res.json({
     code,
@@ -22,7 +26,7 @@ function reply (res, { code = 200, data = null, message = '' }) {
  *   e.g. parkingLotEntryRank = 3, will find in parkingLotRank = 2 or 4 first and so on
  * - if no slot available then, will return null
  *
- * @param {Number} parkingLotEntryRank rank of parking lot's entry
+ * @param {Number} [parkingLotEntryRank=0] rank of parking lot's entry
  * @param {ParkingLotStacks} parkingLotStacks parkingLotStacks that's sorted by rank
  * @returns {ParkingLotStack} nearest available parkingLotStack
  */

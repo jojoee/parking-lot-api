@@ -3,7 +3,7 @@ const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
 const model = require('./../model')
-let request, server, url, db, response
+let request, server, db, response
 
 before(() => {
   server = require('./../app')
@@ -14,16 +14,9 @@ before(() => {
 
 describe('POST /parking_lot to create parking lot', () => {
   before(async () => {
-    // prepare
-    url = '/parking_lot'
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
-
     // perform
     response = await request
-      .post(url)
+      .post('/parking_lot')
       .send({
         name: 'mall_1',
         rank: 1,
@@ -33,6 +26,13 @@ describe('POST /parking_lot to create parking lot', () => {
           3: 3
         }
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture
@@ -103,15 +103,8 @@ describe('POST /parking_lot to create parking lot', () => {
 describe('POST /parking_lot to create parking lot with same name', () => {
   before(async () => {
     // prepare
-    url = '/parking_lot'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
-
-    // prepare
     response = await request
-      .post(url)
+      .post('/parking_lot')
       .send({
         name: 'mall_1',
         rank: 1,
@@ -124,7 +117,7 @@ describe('POST /parking_lot to create parking lot with same name', () => {
 
     // perform
     response = await request
-      .post(url)
+      .post('/parking_lot')
       .send({
         name: 'mall_1',
         rank: 2,
@@ -134,6 +127,13 @@ describe('POST /parking_lot to create parking lot with same name', () => {
           3: 3
         }
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture
@@ -151,15 +151,8 @@ describe('POST /parking_lot to create parking lot with same name', () => {
 describe('POST /parking_lot to create parking lot with same rank', () => {
   before(async () => {
     // prepare
-    url = '/parking_lot'
-    await model.resetTable('Ticket')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLot')
-
-    // prepare
     response = await request
-      .post(url)
+      .post('/parking_lot')
       .send({
         name: 'mall_1',
         rank: 1,
@@ -172,7 +165,7 @@ describe('POST /parking_lot to create parking lot with same rank', () => {
 
     // perform
     response = await request
-      .post(url)
+      .post('/parking_lot')
       .send({
         name: 'mall_2',
         rank: 1,
@@ -182,6 +175,13 @@ describe('POST /parking_lot to create parking lot with same rank', () => {
           3: 3
         }
       })
+  })
+
+  after(async () => {
+    await model.resetTable('Ticket')
+    await model.resetTable('Slot')
+    await model.resetTable('ParkingLotStack')
+    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture

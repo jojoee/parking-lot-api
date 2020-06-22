@@ -29,7 +29,7 @@ async function park (req, res, next) {
         data: null
       })
     } else {
-      console.log(err)
+      console.log('err', err)
       reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
     }
   }
@@ -51,6 +51,7 @@ async function exit (req, res, next) {
         code: constant.HTTP_CODE.NOT_FOUND
       })
     } else {
+      console.log('err', err)
       reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
     }
   }

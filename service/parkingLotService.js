@@ -4,13 +4,14 @@ const debug = require('debug')(`${config.NAME}:service:parkingLot`)
 const db = require('../model').getConnections()
 
 /**
- * @param {String} name
- * @param {Number} rank integer number
- * @param {Object} nSlotsKey
+ * @param {String} param.name
+ * @param {Number} param.rank integer number
+ * @param {Object} param.nSlotsKey
  * @returns {ParkingLot}
  */
-async function createParkingLot ({ name, rank, nSlotsKey }) {
+async function createParkingLot (param) {
   debug(createParkingLot.name)
+  const { name, rank, nSlotsKey } = param
 
   // create parkingLot
   const { dataValues: parkingLot } = await db.ParkingLot.create({ name, rank })
@@ -48,9 +49,13 @@ async function createParkingLot ({ name, rank, nSlotsKey }) {
   return parkingLot
 }
 
-async function getParkingLotStacks () {
+/**
+ * @param {Object} [param={}]
+ * @returns {ParkingLotStack[]}
+ */
+async function getParkingLotStacks (param = {}) {
   debug(getParkingLotStacks.name)
-  const parkingLotStackModels = await db.ParkingLotStack.findAll({})
+  const parkingLotStackModels = await db.ParkingLotStack.findAll(param)
   const parkingLotStacks = (parkingLotStackModels.length > 0)
     ? parkingLotStackModels.map(item => item.dataValues)
     : []

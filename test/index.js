@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.test' })
 const constant = require('../config/constant')
 const supertest = require('supertest')
-let request, server, url
+let request, server
 
 before(() => {
   server = require('./../app')
@@ -9,14 +9,10 @@ before(() => {
   request = supertest(server)
 })
 
-describe('/', () => {
-  before(() => {
-    url = '/'
-  })
-
+describe('GET /', () => {
   it('returns hello message', done => {
     request
-      .get(url)
+      .get('/')
       .expect(constant.HTTP_CODE.OK, {
         code: constant.HTTP_CODE.OK,
         data: null,

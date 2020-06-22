@@ -1,7 +1,7 @@
 const { reply } = require('./../module/util')
 const config = require('../config')
-const parkingLotService = require('../service/parkingLotService')
 const constant = require('../config/constant')
+const parkingLotService = require('../service/parkingLotService')
 const debug = require('debug')(`${config.NAME}:controller:parkingLot`)
 
 async function createParkingLot (req, res, next) {
@@ -20,6 +20,7 @@ async function createParkingLot (req, res, next) {
       data: parkingLot
     })
   } catch (err) {
+    console.log('err', err)
     reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
   }
 }
@@ -34,6 +35,7 @@ async function getParkingLotStacks (req, res, next) {
       data: parkingLotStacks
     })
   } catch (err) {
+    console.log('err', err)
     reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
   }
 }

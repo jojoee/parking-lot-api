@@ -1,4 +1,4 @@
-require('dotenv').config({ silent: true })
+require('dotenv').config()
 const packageJsonConfig = require('./../package.json')
 
 module.exports = {

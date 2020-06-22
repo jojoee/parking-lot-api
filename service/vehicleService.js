@@ -6,14 +6,18 @@ const db = require('../model').getConnections()
 const util = require('../module/util')
 
 /**
+ * @param {Number} [param.vehicleSizeId=0]
+ * @param {String} [param.plateNumber='']
+ * @param {Number} [param.parkingLotId=0]
  * @returns {Ticket}
  */
-async function park ({
-  vehicleSizeId = 0,
-  plateNumber = '',
-  parkingLotId = 0
-}) {
+async function park (param) {
   debug(park.name)
+  const {
+    vehicleSizeId = 0,
+    plateNumber = '',
+    parkingLotId = 0
+  } = param
 
   // find all stacks by slot_size_id
   const parkingLotStackModels = await db.ParkingLotStack.findAll({
@@ -77,8 +81,13 @@ async function park ({
   }
 }
 
-async function exit ({ ticketId }) {
+/**
+ * @param {Number} param.ticketId
+ */
+async function exit (param) {
   debug(exit.name)
+  const { ticketId } = param
+
   const ticketModel = await db.Ticket.findOne({
     where: { id: ticketId }
   })
