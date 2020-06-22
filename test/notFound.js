@@ -9,18 +9,18 @@ before(() => {
   request = supertest(server)
 })
 
-describe('/', () => {
+describe('GET /404', () => {
   before(() => {
-    url = '/'
+    url = '/404'
   })
 
-  it('returns hello message', done => {
+  it('returns 404 response', done => {
     request
       .get(url)
-      .expect(constant.HTTP_CODE.OK, {
-        code: constant.HTTP_CODE.OK,
+      .expect(constant.HTTP_CODE.NOT_FOUND, {
+        code: constant.HTTP_CODE.NOT_FOUND,
         data: null,
-        message: 'hello'
+        message: ''
       }, done)
   })
 })
