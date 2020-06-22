@@ -10,6 +10,7 @@ router.get('/', (req, res) => reply(res, { message: 'hello' }))
 
 // route
 router.post('/parking_lot', parkingLotController.createParkingLot)
+router.get('/parking_lot/status', parkingLotController.getParkingLotStacks)
 router.post('/vehicle/park', vehicleController.park)
 router.post('/vehicle/exit', vehicleController.exit)
 // 404

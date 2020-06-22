@@ -48,6 +48,17 @@ async function createParkingLot ({ name, rank, nSlotsKey }) {
   return parkingLot
 }
 
+async function getParkingLotStacks () {
+  debug(getParkingLotStacks.name)
+  const parkingLotStackModels = await db.ParkingLotStack.findAll({})
+  const parkingLotStacks = (parkingLotStackModels.length > 0)
+    ? parkingLotStackModels.map(item => item.dataValues)
+    : []
+
+  return parkingLotStacks
+}
+
 module.exports = {
-  createParkingLot
+  createParkingLot,
+  getParkingLotStacks
 }

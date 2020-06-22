@@ -24,6 +24,21 @@ async function createParkingLot (req, res, next) {
   }
 }
 
+async function getParkingLotStacks (req, res, next) {
+  debug(getParkingLotStacks.name)
+
+  try {
+    const parkingLotStacks = await parkingLotService.getParkingLotStacks()
+
+    reply(res, {
+      data: parkingLotStacks
+    })
+  } catch (err) {
+    reply(res, { code: constant.HTTP_CODE.BAD_REQUEST })
+  }
+}
+
 module.exports = {
-  createParkingLot
+  createParkingLot,
+  getParkingLotStacks
 }
