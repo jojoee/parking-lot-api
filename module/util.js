@@ -81,5 +81,6 @@ function orderRanksByNearestRank (entryRank, ranks) {
 
 module.exports = {
   reply,
+  getNearestAvailableParkingLotStack,
   orderRanksByNearestRank
 }
