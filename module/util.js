@@ -13,6 +13,42 @@ function reply (res, { code = 200, data = null, message = '' }) {
 }
 
 /**
+ * Get nearest slot
+ * nearest slot is based on slot rank and parking lot rank
+ *
+ * criteria
+ * - find lowest rank slot in the same parking lot
+ * - if not then, find the lowest rank slot in the nearest parking lot
+ *   e.g. parkingLotEntryRank = 3, will find in parkingLotRank = 2 or 4 first and so on
+ * - if no slot available then, will return null
+ *
+ * @param {Number} parkingLotEntryRank rank of parking lot's entry
+ * @param {ParkingLotStacks} parkingLotStacks parkingLotStacks that's sorted by rank
+ * @returns {ParkingLotStack} nearest available parkingLotStack
+ */
+function getNearestAvailableParkingLotStack (parkingLotEntryRank = 0, parkingLotStacks) {
+  // sort ranks
+  const ranks = parkingLotStacks.map(item => item.parking_lot_rank)
+  const sortedRanks = orderRanksByNearestRank(parkingLotEntryRank, ranks)
+
+  // change data structure from list to dict
+  const parkingLotStackKey = {}
+  for (const parkingLotStack of parkingLotStacks) {
+    parkingLotStackKey[parkingLotStack.parking_lot_rank] = parkingLotStack
+  }
+
+  let nearestAvailableParkingLotStack = null
+  for (const rank of sortedRanks) {
+    if (parkingLotStackKey[rank].data !== '[]') {
+      nearestAvailableParkingLotStack = parkingLotStackKey[rank]
+      break
+    }
+  }
+
+  return nearestAvailableParkingLotStack
+}
+
+/**
  * Order parking lot rank with entryRank by nearest rank
  *
  * @param {Number} entryRank
