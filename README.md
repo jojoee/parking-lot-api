@@ -9,6 +9,14 @@ Parking lot API problem design
 ## Getting started
 Install [Docker](https://github.com/docker) + [Docker Compose](https://github.com/docker/compose) then run `docker-compose up`
 
+If you want to run test, so open the new terminal then
+```
+docker exec -it ctn_parking_lot_api sh
+> NODE_ENV=test npx sequelize db:create
+> NODE_ENV=test npx sequelize db:migrate
+> npm run validate
+```
+
 ## Assumption
 
 ![Scenario](./asset/parking-lot-scenario.png)
@@ -66,25 +74,16 @@ When we exit a parking lot
 - [x] GET `/ticket?slot_size_id=1` to get ticket by slot size (which contains registration plate numbers / slot numbers)
 
 ## Future improvement
-- [x] Database: migration
 - [x] Test: unit test
 - [x] Test: E2E test
-- [x] Docker Compose
-- [ ] Docker Compose for running end-to-end test
 - [ ] Route parameter validation
-- [ ] Complete docstrings
 - [ ] Security concerns e.g. not expose `id` field directly from database
 - [ ] Hide 5xx error
 - [ ] Encoding e.g. encode ticket id
-- [ ] PATCH `/parking_lot`
-- [ ] DELETE `/parking_lot`
-- [ ] PATCH `/slot`
 - [ ] Archive strategy on ticket table that continually increase
 - [ ] Load Balancer
 - [ ] [Kong API Gateway](https://github.com/Kong/kong#why-kong) for authentication, rate-limit, etc.
 - [ ] API: pagination support
-- [x] CI: setup
-- [x] CI: unit test
 - [ ] CI: E2E test
 - [ ] CI: deploy coverage report to the service e.g. https://codecov.io/
 - [ ] Create example of Kubernetes deployment
@@ -100,18 +99,17 @@ npx sequelize db:create
 npx sequelize migration:generate --name create-slot_size-table
 npx sequelize migration:generate --name add-index-into-slot_size-table
 npx sequelize migration:generate --name create-slot-table
-
 npx sequelize db:seed:all
 npx sequelize db:seed:undo:all
-
 npx sequelize db:migrate
 npx sequelize db:migrate:undo:all
+
+NODE_ENV=test npx sequelize db:create
+NODE_ENV=test npx sequelize db:migrate
 
 docker build --tag parking_lot_api:1.0.0 .
 docker run --name ctn_parking_lot_api parking_lot_api:1.0.0
 docker exec -it ctn_parking_lot_api sh
-  npx sequelize db:create
-  npx sequelize db:migrate
 
 docker exec -it ctn_mysql sh
   mysql -u root -p
