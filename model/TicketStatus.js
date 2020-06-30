@@ -6,10 +6,22 @@ module.exports = function (sequelize, DataTypes) {
     },
     name: {
       type: DataTypes.STRING
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
     }
   }, {
     tableName: 'ticket_status',
-    timestamps: false
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   })
 
   return TicketStatus

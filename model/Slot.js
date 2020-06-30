@@ -31,10 +31,22 @@ module.exports = function (sequelize, DataTypes) {
         model: 'SlotStatus',
         key: 'id'
       }
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
     }
   }, {
     tableName: 'slot',
-    timestamps: false
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   })
 
   return Slot

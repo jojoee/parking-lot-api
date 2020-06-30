@@ -32,10 +32,22 @@ module.exports = function (sequelize, DataTypes) {
     exit_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false
     }
   }, {
     tableName: 'ticket',
-    timestamps: false
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
   })
 
   return Ticket
