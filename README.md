@@ -116,7 +116,7 @@ docker exec -it ctn_mysql sh
 
 docker rm ctn_parking_lot_api
 docker rm ctn_mysql
-docker rmi parking-lot-api:12.15.0-alpine
+docker rmi parking-lot-api:1.0.0
 docker-compose up
 ```
 
