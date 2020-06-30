@@ -1,10 +1,13 @@
 FROM node:12.15.0-alpine
 
-RUN mkdir -p /usr/src/app
-COPY . /usr/src/app
+ENV NODE_PACKAGES_HOME=/usr/src/app
 
-WORKDIR ./usr/src/app
+RUN mkdir -p $NODE_PACKAGES_HOME
+COPY . $NODE_PACKAGES_HOME
+WORKDIR $NODE_PACKAGES_HOME
+
 RUN npm install
+
 ENTRYPOINT []
 
 CMD node server.js
