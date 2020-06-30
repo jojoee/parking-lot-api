@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+
+# NPM
+node_modules
+npm-debug.log
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# IDE
+.vscode
+.idea
+
+# CI
+.travis.yml
+.circleci
+
+# Git
+.git
+.gitignore
+
+# note
+README.md
+LICENSE
+
+# env
+.env
+.env.example
+
+# asset
+asset

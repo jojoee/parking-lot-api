@@ -18,6 +18,15 @@ services:
       - 5005:5005
     links:
       - db_mysql
+    environment:
+      - PORT=5005
+      - DEBUG=parking-lot-api:*
+      - SECRET=meow
+      - DB_HOST=db_mysql
+      - DB_NAME=parking_lot_dev
+      - DB_USERNAME=root
+      - DB_PASSWORD=rootpass
+      - DB_PORT=3306
     depends_on:
       db_mysql:
         condition: service_healthy
