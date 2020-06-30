@@ -58,6 +58,7 @@ describe('POST /vehicle/exit to leave the parking lot', () => {
     ticket = ticketResponse.body.data
 
     // perform
+    await testHelper.sleep(1010)
     response = await request
       .post('/vehicle/exit')
       .send({
@@ -73,11 +74,19 @@ describe('POST /vehicle/exit to leave the parking lot', () => {
     assert.strictEqual(response.body.message, '')
   })
 
-  it('changes status of the ticket', async () => {
+  it('updates ticket row', async () => {
     const ticketModel = await db.Ticket.findOne({ where: {
       id: ticket.id
     } })
+
+    // update status
     assert.strictEqual(ticketModel.dataValues.ticket_status_id, constant.TICKET_STATUS.CLOSE)
+
+    // update "exit_at"
+    const exitAt = new Date(ticketModel.dataValues.exit_at)
+    const parkAt = new Date(ticketModel.dataValues.park_at)
+    const diff = exitAt.getTime() - parkAt.getTime()
+    assert.ok(diff > 0)
   })
 
   it('updates slot status', async () => {

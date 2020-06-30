@@ -7,6 +7,11 @@ async function resetTestTables () {
   await model.resetTable('ParkingLot')
 }
 
+async function sleep (waitTimeInMs) {
+  return new Promise(resolve => setTimeout(resolve, waitTimeInMs))
+}
+
 module.exports = {
-  resetTestTables
+  resetTestTables,
+  sleep
 }

@@ -101,9 +101,10 @@ async function exit (param) {
     // get transaction
     transaction = await db.sequelize.transaction()
 
-    // change status of the ticket
+    // change the ticket
     await db.Ticket.update({
-      ticket_status_id: constant.TICKET_STATUS.CLOSE
+      ticket_status_id: constant.TICKET_STATUS.CLOSE,
+      exit_at: db.sequelize.literal('CURRENT_TIMESTAMP')
     }, {
       where: { id: ticket.id },
       transaction
