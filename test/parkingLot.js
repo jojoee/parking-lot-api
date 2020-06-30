@@ -3,6 +3,7 @@ const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
 const model = require('./../model')
+const testHelper = require('./testHelper')
 let request, server, db, response
 
 before(() => {
@@ -14,6 +15,9 @@ before(() => {
 
 describe('POST /parking_lot to create parking lot', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // perform
     response = await request
       .post('/parking_lot')
@@ -26,13 +30,6 @@ describe('POST /parking_lot to create parking lot', () => {
           3: 3
         }
       })
-  })
-
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture
@@ -102,6 +99,9 @@ describe('POST /parking_lot to create parking lot', () => {
 
 describe('POST /parking_lot to create parking lot with same name', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare
     response = await request
       .post('/parking_lot')
@@ -129,13 +129,6 @@ describe('POST /parking_lot to create parking lot with same name', () => {
       })
   })
 
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
-  })
-
   // todo move constant/hardcode to test/fixture
   it(`returns ${constant.HTTP_CODE.BAD_REQUEST}`, () => {
     // check response
@@ -150,6 +143,9 @@ describe('POST /parking_lot to create parking lot with same name', () => {
 
 describe('POST /parking_lot to create parking lot with same rank', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare
     response = await request
       .post('/parking_lot')
@@ -175,13 +171,6 @@ describe('POST /parking_lot to create parking lot with same rank', () => {
           3: 3
         }
       })
-  })
-
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture

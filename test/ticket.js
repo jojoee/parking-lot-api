@@ -2,7 +2,7 @@ require('dotenv').config({ path: '.env.test' })
 const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
-const model = require('./../model')
+const testHelper = require('./testHelper')
 let request, server, response
 
 before(() => {
@@ -13,6 +13,9 @@ before(() => {
 
 describe('GET /ticket to get a ticket', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare, create parking lot
     response = await request
       .post('/parking_lot')
@@ -47,13 +50,6 @@ describe('GET /ticket to get a ticket', () => {
     // perform
     response = await request
       .get(`/ticket?vehicleSizeId=${constant.SLOT_SIZE.SMALL}`)
-  })
-
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture

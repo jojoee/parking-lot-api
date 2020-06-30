@@ -3,6 +3,7 @@ const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
 const model = require('./../model')
+const testHelper = require('./testHelper')
 let request, server, db, response
 let vehicleSizeId, plateNumber, parkingLot
 
@@ -15,6 +16,9 @@ before(() => {
 
 describe('POST /vehicle/park to get a ticket', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
     plateNumber = 'abc-123'
@@ -41,13 +45,6 @@ describe('POST /vehicle/park to get a ticket', () => {
         plateNumber,
         parkingLotId: parkingLot.id
       })
-  })
-
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
   })
 
   // todo move constant/hardcode to test/fixture
@@ -87,6 +84,9 @@ describe('POST /vehicle/park to get a ticket', () => {
 
 describe('POST /vehicle/park to get a nearest slot', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
     plateNumber = 'abc-123'
@@ -124,13 +124,6 @@ describe('POST /vehicle/park to get a nearest slot', () => {
       })
   })
 
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
-  })
-
   it(`returns ${constant.HTTP_CODE.CREATED}`, () => {
     // check response
     assert.strictEqual(response.status, constant.HTTP_CODE.CREATED)
@@ -159,6 +152,9 @@ describe('POST /vehicle/park to get a nearest slot', () => {
 describe(`POST /vehicle/park to get a nearest slot
   (1st nearest parking slot is not available, using 2nd nearest parking slot`, () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare, reset
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
     plateNumber = 'abc-123'
@@ -218,13 +214,6 @@ describe(`POST /vehicle/park to get a nearest slot
       })
   })
 
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
-  })
-
   it(`returns ${constant.HTTP_CODE.CREATED}`, () => {
     // check response
     assert.strictEqual(response.status, constant.HTTP_CODE.CREATED)
@@ -252,6 +241,9 @@ describe(`POST /vehicle/park to get a nearest slot
 
 describe('POST /vehicle/park to get a nearest slot but not slot available', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
     plateNumber = 'abc-123'
@@ -288,12 +280,6 @@ describe('POST /vehicle/park to get a nearest slot but not slot available', () =
         plateNumber,
         parkingLotId: currentParkingLotId
       })
-  })
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
   })
 
   it(`returns ${constant.HTTP_CODE.OK}`, () => {

@@ -3,6 +3,7 @@ const assert = require('assert')
 const constant = require('../config/constant')
 const supertest = require('supertest')
 const model = require('./../model')
+const testHelper = require('./testHelper')
 let request, server, db, response
 let parkingLot, vehicleSizeId, plateNumber, ticket
 
@@ -15,6 +16,9 @@ before(() => {
 
 describe('POST /vehicle/exit to leave the parking lot', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
     plateNumber = 'abc-123'
@@ -61,13 +65,6 @@ describe('POST /vehicle/exit to leave the parking lot', () => {
       })
   })
 
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
-  })
-
   it(`returns ${constant.HTTP_CODE.OK}`, () => {
     // check response
     assert.strictEqual(response.status, constant.HTTP_CODE.OK)
@@ -108,6 +105,9 @@ describe('POST /vehicle/exit to leave the parking lot', () => {
 
 describe('POST /vehicle/exit not found a ticket id', () => {
   before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
     // prepare, reset
     vehicleSizeId = constant.VEHICLE_SIZE.MEDIUM
     plateNumber = 'abc-123'
@@ -129,13 +129,6 @@ describe('POST /vehicle/exit not found a ticket id', () => {
       .send({
         ticketId: -1
       })
-  })
-
-  after(async () => {
-    await model.resetTable('Ticket')
-    await model.resetTable('Slot')
-    await model.resetTable('ParkingLotStack')
-    await model.resetTable('ParkingLot')
   })
 
   // // todo move constant/hardcode to test/fixture
