@@ -290,3 +290,66 @@ describe('POST /vehicle/park to get a nearest slot but not slot available', () =
     assert.strictEqual(response.body.message, '')
   })
 })
+
+describe('POST /vehicle/park to get a nearest slot with invalid parameter', () => {
+  before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
+    // perform
+    response = await request
+      .post('/vehicle/park')
+      .send({
+        vehicleSizeId: 'id one',
+        plateNumber: 1548793,
+        parkingLotId: 'one-five-seven'
+      })
+  })
+
+  it(`returns ${constant.HTTP_CODE.UNPROCESSABLE_ENTITY}`, () => {
+    // check response
+    assert.strictEqual(response.status, constant.HTTP_CODE.UNPROCESSABLE_ENTITY)
+    assert.deepStrictEqual(response.body, {
+      code: 422,
+      data: [
+        {
+          message: '"vehicleSizeId" must be a number',
+          path: [
+            'vehicleSizeId'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'id one',
+            key: 'vehicleSizeId',
+            label: 'vehicleSizeId'
+          }
+        },
+        {
+          message: '"plateNumber" must be a string',
+          path: [
+            'plateNumber'
+          ],
+          type: 'string.base',
+          context: {
+            value: 1548793,
+            key: 'plateNumber',
+            label: 'plateNumber'
+          }
+        },
+        {
+          message: '"parkingLotId" must be a number',
+          path: [
+            'parkingLotId'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'one-five-seven',
+            key: 'parkingLotId',
+            label: 'parkingLotId'
+          }
+        }
+      ],
+      message: ''
+    })
+  })
+})

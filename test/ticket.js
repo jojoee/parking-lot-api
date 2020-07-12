@@ -61,3 +61,38 @@ describe('GET /ticket to get a ticket', () => {
     assert.strictEqual(response.body.message, '')
   })
 })
+
+describe('GET /ticket to get a ticket with invalid parameter', () => {
+  before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
+    // perform
+    response = await request
+      .get('/ticket?vehicleSizeId=two')
+  })
+
+  // todo move constant/hardcode to test/fixture
+  it(`returns ${constant.HTTP_CODE.UNPROCESSABLE_ENTITY}`, () => {
+    // check response
+    assert.strictEqual(response.status, constant.HTTP_CODE.UNPROCESSABLE_ENTITY)
+    assert.deepStrictEqual(response.body, {
+      code: 422,
+      data: [
+        {
+          message: '"vehicleSizeId" must be a number',
+          path: [
+            'vehicleSizeId'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'two',
+            key: 'vehicleSizeId',
+            label: 'vehicleSizeId'
+          }
+        }
+      ],
+      message: ''
+    })
+  })
+})

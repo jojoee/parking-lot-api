@@ -146,3 +146,41 @@ describe('POST /vehicle/exit not found a ticket id', () => {
     assert.strictEqual(response.status, constant.HTTP_CODE.NOT_FOUND)
   })
 })
+
+describe('POST /vehicle/exit with invalid parameter', () => {
+  before(async () => {
+    // reset
+    await testHelper.reset
+
+    // perform
+    response = await request
+      .post('/vehicle/exit')
+      .send({
+        'ticketId': 'four'
+      })
+  })
+
+  // todo move constant/hardcode to test/fixture
+  it(`returns ${constant.HTTP_CODE.UNPROCESSABLE_ENTITY}`, () => {
+    // check response
+    assert.strictEqual(response.status, constant.HTTP_CODE.UNPROCESSABLE_ENTITY)
+    assert.deepStrictEqual(response.body, {
+      code: 422,
+      data: [
+        {
+          message: '"ticketId" must be a number',
+          path: [
+            'ticketId'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'four',
+            key: 'ticketId',
+            label: 'ticketId'
+          }
+        }
+      ],
+      message: ''
+    })
+  })
+})

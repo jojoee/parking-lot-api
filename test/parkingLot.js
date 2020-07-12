@@ -184,3 +184,85 @@ describe('POST /parking_lot to create parking lot with same rank', () => {
     })
   })
 })
+
+describe('POST /parking_lot to create parking lot with invalid parameter', () => {
+  before(async () => {
+    // reset
+    await testHelper.resetTestTables()
+
+    // perform
+    response = await request
+      .post('/parking_lot')
+      .send({
+        name: 2020,
+        rank: 'super rank',
+        nSlotsKey: {
+          1: 10,
+          2: 'twelve',
+          3: 'twenty'
+        }
+      })
+  })
+
+  // todo move constant/hardcode to test/fixture
+  it(`returns ${constant.HTTP_CODE.UNPROCESSABLE_ENTITY}`, () => {
+    // check response
+    assert.strictEqual(response.status, constant.HTTP_CODE.UNPROCESSABLE_ENTITY)
+    assert.deepStrictEqual(response.body, {
+      code: 422,
+      data: [
+        {
+          message: '"name" must be a string',
+          path: [
+            'name'
+          ],
+          type: 'string.base',
+          context: {
+            value: 2020,
+            key: 'name',
+            label: 'name'
+          }
+        },
+        {
+          message: '"rank" must be a number',
+          path: [
+            'rank'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'super rank',
+            key: 'rank',
+            label: 'rank'
+          }
+        },
+        {
+          message: '"2" must be a number',
+          path: [
+            'nSlotsKey',
+            '2'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'twelve',
+            key: '2',
+            label: '2'
+          }
+        },
+        {
+          message: '"3" must be a number',
+          path: [
+            'nSlotsKey',
+            '3'
+          ],
+          type: 'number.base',
+          context: {
+            value: 'twenty',
+            key: '3',
+            label: '3'
+          }
+        }
+      ],
+      message: ''
+    })
+  })
+})
