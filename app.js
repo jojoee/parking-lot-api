@@ -9,7 +9,11 @@ const app = express()
 const router = require('./route')
 
 // init
+// todo make sure database connection is already established before start the app
+// todo gracefully restart ?
 model.initDb()
+
+// todo enable CORS, https://expressjs.com/en/resources/middleware/cors.html
 
 // middleware
 app.use(helmet())

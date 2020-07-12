@@ -77,6 +77,7 @@ When we exit a parking lot
 - [x] Test: unit test
 - [x] Test: E2E test
 - [ ] Route parameter validation
+- [ ] Docker: `Dockerfile` for development
 - [ ] Security concerns e.g. not expose `id` field directly from database
 - [ ] Hide 5xx error
 - [ ] Encoding e.g. encode ticket id

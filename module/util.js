@@ -55,6 +55,7 @@ function getNearestAvailableParkingLotStack (parkingLotEntryRank = 0, parkingLot
 /**
  * Order parking lot rank with entryRank by nearest rank
  *
+ * todo naming
  * @param {Number} entryRank
  * @param {Number[]} ranks list of parking lot rank that's sorted by asc
  * @returns {Number[]}
