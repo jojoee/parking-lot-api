@@ -61,6 +61,18 @@ services:
       db_mysql:
         condition: service_healthy
 
+  # example of client
+  app_parking_lot_client:
+    build:
+      context: ./example
+      dockerfile: Dockerfile
+    image: parking-lot-client:1.0.0
+    container_name: ctn_parking_lot_client
+    restart: always
+    working_dir: /usr/src/app
+    ports:
+      - 5007:5007
+
   db_mysql:
     image: mysql:8.0.19
     container_name: ctn_mysql

@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "description": "Example of client for parking lot API",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify index.js -o bundle.js --verbose",
+    "build.watch": "watchify index.js -o bundle.js --verbose",
+    "start": "serve -l 5007",
+    "start.watch": "live-server --port=5007 --ignore=node_modules --watch=index.html,bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^11.3.2"
+  },
+  "devDependencies": {
+    "axios": "^0.20.0",
+    "browserify": "^16.5.1",
+    "live-server": "^1.2.1",
+    "watchify": "^3.11.1"
+  }
+}

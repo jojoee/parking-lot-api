@@ -15,3 +15,7 @@ coverage
 
 # env
 .env
+
+# example of client side
+example/node_modules
+example/bundle.js
