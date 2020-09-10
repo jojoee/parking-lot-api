@@ -1,6 +1,7 @@
 const config = require('./config')
 const model = require('./model')
 const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const helmet = require('helmet')
@@ -13,9 +14,8 @@ const router = require('./route')
 // todo gracefully restart ?
 model.initDb()
 
-// todo enable CORS, https://expressjs.com/en/resources/middleware/cors.html
-
 // middleware
+app.use(cors()) // considering removing it if you dont need it
 app.use(helmet())
 app.use(compression())
 app.use(session({
