@@ -1,7 +1,7 @@
 version: "2.1"
 
 services:
-
+  # production container
   app_parking_lot_api:
     build:
       context: .
@@ -23,7 +23,37 @@ services:
       - DEBUG=parking-lot-api:*
       - SECRET=meow
       - DB_HOST=db_mysql
-      - DB_NAME=parking_lot_dev
+      - DB_NAME=parking_lot_api
+      - DB_USERNAME=root
+      - DB_PASSWORD=rootpass
+      - DB_PORT=3306
+    depends_on:
+      db_mysql:
+        condition: service_healthy
+  
+  # alpha / develop container for testing purpose
+  app_parking_lot_api_alpha:
+    build:
+      context: .
+      dockerfile: Dockerfile.alpha
+    image: parking-lot-api:1.0.0-alpha
+    container_name: ctn_parking_lot_api_alpha
+    restart: always
+    working_dir: /usr/src/app
+    command: >
+      sh -c "npx sequelize db:create &&
+             npx sequelize db:migrate &&
+             node server.js"
+    ports:
+      - 5006:5005
+    links:
+      - db_mysql
+    environment:
+      - PORT=5005
+      - DEBUG=parking-lot-api:*
+      - SECRET=meow
+      - DB_HOST=db_mysql
+      - DB_NAME=parking_lot_api_alpha
       - DB_USERNAME=root
       - DB_PASSWORD=rootpass
       - DB_PORT=3306
