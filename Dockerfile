@@ -17,4 +17,4 @@ COPY . $NODE_PACKAGES_HOME
 
 ENTRYPOINT []
 
-CMD ["npm", "run", "server"]
+CMD ["npm", "run", "start"]
