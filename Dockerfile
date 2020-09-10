@@ -8,7 +8,7 @@ WORKDIR $NODE_PACKAGES_HOME
 # install dependencies
 COPY ./package.json ./
 COPY ./package-lock.json ./
-RUN npm install
+RUN npm install --prod
 
 # build the app
 RUN mkdir -p $NODE_PACKAGES_HOME
