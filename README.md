@@ -11,10 +11,15 @@ Install [Docker](https://github.com/docker) + [Docker Compose](https://github.co
 
 If you want to run test, so open the new terminal then
 ```
-docker exec -it ctn_parking_lot_api sh
+docker exec -it ctn_parking_lot_api_alpha sh
 > NODE_ENV=test npx sequelize db:create
 > NODE_ENV=test npx sequelize db:migrate
 > npm run validate
+```
+
+To access production ready container, then
+```
+docker exec -it ctn_parking_lot_api sh
 ```
 
 ## Assumption
@@ -91,6 +96,7 @@ When we exit a parking lot
 - [ ] Distributed storage, incase the data is too big
 - [ ] Limitation: where the limit of caching table
 - [ ] Database: add index to optimize fast search
+- [x] Example code of client side with [multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/)
 
 ## CMD
 
@@ -107,17 +113,31 @@ npx sequelize db:migrate:undo:all
 NODE_ENV=test npx sequelize db:create
 NODE_ENV=test npx sequelize db:migrate
 
-docker build --tag parking_lot_api:1.0.0 .
-docker run --name ctn_parking_lot_api parking_lot_api:1.0.0
+docker build --tag parking-lot-api:1.0.0 .
+docker build -f ./Dockerfile --tag parking-lot-api:1.0.0 .
+docker run --name ctn_parking_lot_api parking-lot-api:1.0.0
 docker exec -it ctn_parking_lot_api sh
-
 docker exec -it ctn_mysql sh
   mysql -u root -p
 
 docker rm ctn_parking_lot_api
 docker rm ctn_mysql
+docker rm -f $(docker ps -qa)
 docker rmi parking-lot-api:1.0.0
+docker images "parking-lot-api*" --no-trunc --format "{{.ID}}"
+docker rmi $(docker images "parking-lot-api*" --no-trunc --format "{{.ID}}")
+docker image prune
+
 docker-compose up
+docker-compose up --build -d
+
+cd ./example
+docker build -f ./Dockerfile --tag parking-lot-api-client:1.0.0 .
+docker run -p 5008:5007 --name ctn_parking_lot_api_client parking-lot-api-client:1.0.0
+
+curl localhost:5005
+curl localhost:5006
+curl localhost:5007
 ```
 
 ## Reference
