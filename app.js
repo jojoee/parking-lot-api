@@ -5,6 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const helmet = require('helmet')
+const hpp = require('hpp')
 const session = require('express-session')
 const app = express()
 const router = require('./route')
@@ -25,6 +26,7 @@ app.use(session({
 }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(hpp())
 app.use(router)
 
 module.exports = app
