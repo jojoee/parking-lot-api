@@ -14,7 +14,7 @@
     "serve": "^11.3.2"
   },
   "devDependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "browserify": "^16.5.1",
     "live-server": "^1.2.1",
     "watchify": "^3.11.1"
