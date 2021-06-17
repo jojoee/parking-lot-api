@@ -4,7 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/jojoee/parking-lot-api)](https://github.com/jojoee/parking-lot-api/issues)
 [![GitHub license](https://img.shields.io/github/license/jojoee/parking-lot-api)](https://github.com/jojoee/parking-lot-api/blob/master/LICENSE)
 
-Parking lot API problem design
+Parking lot API problem design, an API document example is available [here](https://documenter.getpostman.com/view/424070/TzeWHomJ)
 
 ## Getting started
 Install [Docker](https://github.com/docker) + [Docker Compose](https://github.com/docker/compose) then run `docker-compose up`
